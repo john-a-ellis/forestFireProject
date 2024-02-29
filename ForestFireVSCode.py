@@ -74,67 +74,6 @@ average_counts = sum(counts) / len(counts)
 
 print(f"Average number of wildfires per year: {average_counts}")
 
-# Where are the hotspots of wildfire activity?
-## Spatial Analysis
-### Visualization: Heatmap displaying the density of wildfires across different regions.
-
-# Define the latitude and longitude ranges
-
-# Calculate the heatmap data
-# Define the latitude and longitude ranges
-min_lat = db.ForestFirePoints.find_one(sort=[("LATITUDE", 1)])['LATITUDE']
-max_lat = db.ForestFirePoints.find_one(sort=[("LATITUDE", -1)])['LATITUDE']
-min_lon = db.ForestFirePoints.find_one(sort=[("LONGITUDE", 1)])['LONGITUDE']
-max_lon = db.ForestFirePoints.find_one(sort=[("LONGITUDE", -1)])['LONGITUDE']
-
-num_lat_bins = 20
-num_lon_bins = 20
-
-lat_range = np.linspace(min_lat, max_lat, num=num_lat_bins + 1)
-lon_range = np.linspace(min_lon, max_lon, num=num_lon_bins + 1)
-
-# Calculate the size of each grid cell
-lat_step = lat_range[1] - lat_range[0]
-lon_step = lon_range[1] - lon_range[0]
-
-# Initialize an array to store the count of wildfires in each grid cell
-fire_count = np.zeros((num_lat_bins, num_lon_bins))
-
-# Iterate over the wildfires and increment the count in the corresponding grid cell
-for fire in db.ForestFirePoints.find():
-    lat_index = int((fire['LATITUDE'] - min_lat) // lat_step)
-    lon_index = int((fire['LONGITUDE'] - min_lon) // lon_step)
-    if 0 <= lat_index < num_lat_bins and 0 <= lon_index < num_lon_bins:
-        fire_count[lat_index, lon_index] += 1
-
-# Create the heatmap using Plotly
-fig_heatmap = go.Figure(data=go.Heatmap(
-    z=fire_count,
-    x=lon_range,
-    y=lat_range,
-    colorscale='hot'))
-
-# Update layout
-fig_heatmap.update_layout(
-    title='Heatmap of Wildfire Activity (Point Data)',
-    xaxis_title='Longitude',
-    yaxis_title='Latitude',
-    yaxis_autorange='reversed')
-
-# Convert the heatmap plot to HTML
-plot_html_heatmap = fig_heatmap.to_html(include_plotlyjs='cdn')
-
-
-
-# Analysis Result
-
-# 1. High Density of Wildfires: There is a higher density of wildfires in the area with latitude around 60 and longitude around -180, indicated by the dark red color on the heatmap. This region corresponds to a location in the northern part of Canada, possibly in the Yukon, Northwest Territories, or Nunavut, where wildfires are more prevalent.
-
-# 2. Lower Density of Wildfires: The area with latitude around 50 and longitude around -150 shows a lower density of wildfires, as indicated by the yellow color on the heatmap. This region is likely experiencing fewer wildfires compared to the area in the northern part of Canada. It is likely located in the southern part of Canada, possibly in the provinces of British Columbia or Alberta.
-
-# 3. Specific Region with High Wildfire Activity: Additionally, there is a specific area with latitude around 47 and longitude around -60 where the heatmap shows a dark red color, indicating a high density of wildfires in that region. This location is within the Maritime provinces, possibly in Nova Scotia, indicating a localized area with significant wildfire activity.
-
-# Overall, the heatmap provides a visual representation of the distribution of wildfires across different regions, highlighting areas with high and low wildfire activity. These observations can help in understanding the spatial patterns of wildfires in the Maritime provinces of Canada, particularly in Nova Scotia, and can inform further analysis and mitigation efforts.
 
 
 

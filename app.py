@@ -5,7 +5,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     # Sample data for the bar and line charts
     data = {'Year': [1960, 1970, 1980, 1990, 2000, 2010, 2020],
@@ -25,21 +25,6 @@ def index():
     fig_line.update_layout(yaxis2=dict(title='Count of Fires', overlaying='y', side='right', showgrid=False, showline=True, linecolor='red'),
                            barmode='group')
 
-    # Convert the bar and line plots to HTML
-    plot_html_bar = fig_bar.to_html(include_plotlyjs='cdn')
-    plot_html_line = fig_line.to_html(include_plotlyjs='cdn')
-
-    # Sample data for the heatmap
-    np.random.seed(0)
-    data_heatmap = np.random.rand(10, 10)
-
-    # Creating the heatmap
-    fig_heatmap = go.Figure()
-    fig_heatmap.add_trace(go.Heatmap(z=data_heatmap, colorscale='Viridis'))
-
-    # Convert the heatmap plot to HTML
-    plot_html_heatmap = fig_heatmap.to_html(include_plotlyjs='cdn')
-
     # Sample data for the pie chart
     causes = ['Human (H)', 'Human with Power Line (H-PH)', 'Unknown (U)', 'Lightning (L)']
     counts = [25, 35, 20, 20]
@@ -48,13 +33,13 @@ def index():
     fig_pie = go.Figure()
     fig_pie.add_trace(go.Pie(labels=causes, values=counts, textinfo='percent+label', insidetextorientation='radial'))
 
-    # Convert the pie chart to HTML
+    # Convert the plots to HTML
+    plot_html_bar = fig_bar.to_html(include_plotlyjs='cdn')
+    plot_html_line = fig_line.to_html(include_plotlyjs='cdn')
     plot_html_pie = fig_pie.to_html(include_plotlyjs='cdn')
 
-    # Render the template with all the plots
-    # Render the template with all the plots
-return render_template('index.html', plot_bar=plot_html_bar, plot_line=plot_html_line, plot_heatmap=plot_html_heatmap, plot_pie=plot_html_pie)
-
+    # Render the template with the plots
+    return render_template('index.html', plot_bar=plot_html_bar, plot_line=plot_html_line, plot_pie=plot_html_pie)
 
 if __name__ == '__main__':
     app.run(debug=True)
