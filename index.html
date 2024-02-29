@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wildfire Analysis Dashboard</title>
+    <!-- Include necessary CSS and JavaScript libraries -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Other CSS and scripts if needed -->
+</head>
+<body>
+    <div>
+        <!-- Bar chart -->
+        <div id="bar_chart"></div>
+    </div>
+    <div>
+        <!-- Heatmap -->
+        <div id="heatmap_chart"></div>
+    </div>
+    <div>
+        <!-- Pie chart -->
+        <div id="pie_chart"></div>
+    </div>
+
+    <script>
+        // Sample data for the bar chart
+        var bar_data = {
+            x: [1960, 1970, 1980, 1990, 2000, 2010, 2020],
+            y: [100, 150, 130, 170, 200, 180, 190],
+            type: 'bar',
+            marker: {color: 'blue'},
+            opacity: 0.5
+        };
+
+        var bar_layout = {
+            title: 'Total Square Kilometers Burned per Year (1960-2021)',
+            xaxis: {title: 'Year'},
+            yaxis: {title: 'Square Kilometers Burned'}
+        };
+
+        Plotly.newPlot('bar_chart', [bar_data], bar_layout);
+
+        // Sample data for the heatmap
+        var heatmap_data = {
+            z: [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            x: ['Lon1', 'Lon2', 'Lon3'],
+            y: ['Lat1', 'Lat2', 'Lat3'],
+            type: 'heatmap',
+            colorscale: 'hot'
+        };
+
+        var heatmap_layout = {
+            title: 'Heatmap of Wildfire Activity (Point Data)',
+            xaxis: {title: 'Longitude'},
+            yaxis: {title: 'Latitude'},
+            yaxis_autorange: 'reversed'
+        };
+
+        Plotly.newPlot('heatmap_chart', [heatmap_data], heatmap_layout);
+
+        // Sample data for the pie chart
+        var pie_data = [{
+            values: [25, 35, 20, 20],
+            labels: ['Human (H)', 'Human with Power Line (H-PH)', 'Unknown (U)', 'Lightning (L)'],
+            type: 'pie'
+        }];
+
+        var pie_layout = {
+            title: 'Primary Causes of Wildfires',
+            showlegend: true,
+            legend: {x: 1.3, y: 0.9, traceorder: 'normal', font: {size: 8}}
+        };
+
+        Plotly.newPlot('pie_chart', pie_data, pie_layout);
+    </script>
+</body>
+</html>
