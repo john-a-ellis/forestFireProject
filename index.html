@@ -35,9 +35,11 @@
     <div class="row">
       <div class="col-md-5">
         <h3>How has the frequency of wildfires changed over the years?</h3>
+        <h5>Burned Per Year</h5>
         <div id="bar"></div>
       </div>
       <div class="col-md-5">
+        <h5>Count Of Fires</h5>
         <div id="line"></div>
       </div>
     </div>
@@ -45,6 +47,12 @@
       <div class="col-md-12">
         <h3>What are the primary causes of wildfires?</h3>
         <div id="pie"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <h3>What Are The Number of Wildfires per Season? </h3>
+        <div id="seasonalBar"></div>
       </div>
     </div>
   </div>
@@ -103,49 +111,23 @@
       };
       Plotly.newPlot('pie', pieData, pieLayout);
 
+      // Sample data for the seasonal bar chart
+      var seasonalBarData = {
+        x: ['Spring', 'Summer', 'Fall', 'Winter'],
+        y: [150, 200, 180, 120],
+        type: 'bar',
+        marker: { color: 'skyblue' }
+      };
+      var seasonalBarLayout = {
+        title: 'Number of Wildfires per Season',
+        xaxis: { title: 'Season' },
+        yaxis: { title: 'Count of Fires' }
+      };
+      Plotly.newPlot('seasonalBar', [seasonalBarData], seasonalBarLayout);
+
       // Add an event listener to the dropdown menu
       document.getElementById('yearDropdown').addEventListener('change', updateCharts);
     }
-
-    function updateCharts() {
-      var selectedYear = document.getElementById('yearDropdown').value;
-      console.log('Selected Year:', selectedYear);
-    
-      // Fetch data from the server based on the selected year
-      fetch('/data/' + selectedYear)
-        .then(response => response.json())
-        .then(data => {
-          // Update the bar chart data
-          var newBarData = {
-            x: data.years,
-            y: data.total_sq_km,
-            type: 'bar',
-            marker: { color: 'blue' },
-            opacity: 0.5
-          };
-          Plotly.react('bar', [newBarData]);
-    
-          // Update the line chart data
-          var newLineData = {
-            x: data.years,
-            y: data.count_of_fires,
-            type: 'scatter',
-            mode: 'lines+markers',
-            yaxis: 'y2',
-            marker: { color: 'red' }
-          };
-          Plotly.react('line', [newLineData]);
-    
-          // Update the pie chart data
-          var newPieData = [{
-            values: data.causes_values,
-            labels: data.causes_labels,
-            type: 'pie'
-          }];
-          Plotly.react('pie', newPieData);
-        });
-    }
-    
 
     // Call the renderCharts function when the page is loaded
     document.addEventListener('DOMContentLoaded', renderCharts);
