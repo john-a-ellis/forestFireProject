@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <img id="headerImage" src="https://images.pexels.com/photos/3552472/pexels-photo-3552472.jpeg" alt="Wildfire on Mountain" style="width: 50%; display: block; margin: 0 auto;">
+
   <title>Wildfire Causes and Effects in Canada</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -55,6 +57,14 @@
         <div id="area"></div>
       </div>
     </div>
+    <!-- Effectiveness of Fire Protection Zones chart -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>How Does The Frequency Of Fire Occurrence Inside And Outside Fire Protection Zones Compare?</h3>
+        <div id="fireProtectionZones"></div>
+      </div>
+    </div>
+    <!-- End of Effectiveness of Fire Protection Zones chart -->
     <div class="row">
       <div class="col-md-5">
         <h3>What Are The Number of Wildfires per Season? </h3>
@@ -134,7 +144,20 @@ function renderCharts() {
   };
   Plotly.newPlot('area', [areaData], areaLayout);
 
-  
+  // Sample data for the fire protection zones chart
+  var fireProtectionZonesData = {
+    x: ['Inside Protection Zones', 'Outside Protection Zones'],
+    y: [100, 150],  // Sample data for the number of fires inside and outside protection zones
+    type: 'bar',
+    marker: { color: ['green', 'red'] }
+  };
+  var fireProtectionZonesLayout = {
+    title: 'Effectiveness of Fire Protection Zones',
+    xaxis: { title: 'Protection Zone' },
+    yaxis: { title: 'Number of Fires' }
+  };
+  Plotly.newPlot('fireProtectionZones', [fireProtectionZonesData], fireProtectionZonesLayout);
+
   // Sample data for the seasonal bar chart
   var seasonalBarData = {
     x: ['Spring', 'Summer', 'Fall', 'Winter'],
