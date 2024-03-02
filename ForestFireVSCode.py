@@ -31,8 +31,27 @@ def generate_plots(data):
     # Creating the line chart
     fig.add_trace(go.Scatter(x=data['Year'], y=data['Count of Fires'], name='Count of Fires', mode='lines+markers', yaxis='y2', marker=dict(color='red')))
 
+def generate_plots(data):
+    # Creating the bar chart
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=data['Year'], y=data['Total Sq Km'], name='Total Sq Km Burned', marker_color='blue', opacity=0.5))
+
+    # Creating the line chart
+    fig.add_trace(go.Scatter(x=data['Year'], y=data['Count of Fires'], name='Count of Fires', mode='lines+markers', yaxis='y2', marker=dict(color='red')))
+
+    # Create a pie chart
+    causes = ['Human (H)', 'Human with Power Line (H-PH)', 'Unknown (U)', 'Lightning (L)']
+    counts = [25, 35, 20, 20]
+    colors = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen']
+    fig.add_trace(go.Pie(labels=causes, values=counts, name='Primary Causes of Wildfires', marker=dict(colors=colors)))
+
+    # Create a seasonal bar chart
+    seasons = ['Spring', 'Summer', 'Fall', 'Winter']
+    fire_counts = [150, 200, 180, 120]  # Example counts of fires per season
+    fig.add_trace(go.Bar(x=seasons, y=fire_counts, name='Seasonal Fires', marker_color='skyblue'))
+
     # Update layout
-    fig.update_layout(title='Total Square Kilometers Burned per Year (1960-2021)',
+    fig.update_layout(title='Wildfire Data Analysis',
                       xaxis_title='Year',
                       yaxis_title='Square Kilometers Burned',
                       yaxis2=dict(title='Count of Fires', overlaying='y', side='right', showgrid=False, showline=True, linecolor='red'),
@@ -43,5 +62,12 @@ def generate_plots(data):
 
 if __name__ == '__main__':
     data = process_data()
+    plot_html = generate_plots(data)
+    print(plot_html)
+
+
+if __name__ == '__main__':
+    data = process_data()
+    print(data.columns)  # Print the column names
     plot_html = generate_plots(data)
     print(plot_html)
