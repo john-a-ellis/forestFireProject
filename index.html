@@ -134,6 +134,7 @@ function renderCharts() {
   };
   Plotly.newPlot('area', [areaData], areaLayout);
 
+  
   // Sample data for the seasonal bar chart
   var seasonalBarData = {
     x: ['Spring', 'Summer', 'Fall', 'Winter'],
@@ -152,10 +153,11 @@ function renderCharts() {
   document.getElementById('yearDropdown').addEventListener('change', updateCharts);
 }
 
-    // Call the renderCharts function when the page is loaded
-    document.addEventListener('DOMContentLoaded', renderCharts);
+// Call the renderCharts function when the page is loaded
+document.addEventListener('DOMContentLoaded', renderCharts);
 
-  </script>
+</script>
 </body>
 
 </html>
+
