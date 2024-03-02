@@ -45,6 +45,10 @@ def generate_plots(data):
     colors = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen']
     fig.add_trace(go.Pie(labels=causes, values=counts, name='Primary Causes of Wildfires', marker=dict(colors=colors)))
 
+    # Create the area chart
+    fig = go.Figure(data=go.Scatter(x=data['Year'], y=data['Cumulative Sq Km'], fill='tozeroy'))
+    fig.update_layout(title='Cumulative Square Kilometers Burned over the Years', xaxis_title='Year', yaxis_title='Cumulative Square Kilometers Burned')
+    
     # Create a seasonal bar chart
     seasons = ['Spring', 'Summer', 'Fall', 'Winter']
     fire_counts = [150, 200, 180, 120]  # Example counts of fires per season
@@ -57,13 +61,11 @@ def generate_plots(data):
                       yaxis2=dict(title='Count of Fires', overlaying='y', side='right', showgrid=False, showline=True, linecolor='red'),
                       barmode='group')
 
+    
+
     # Return the HTML representation of the plot
     return fig.to_html(include_plotlyjs='cdn')
 
-if __name__ == '__main__':
-    data = process_data()
-    plot_html = generate_plots(data)
-    print(plot_html)
 
 
 if __name__ == '__main__':
