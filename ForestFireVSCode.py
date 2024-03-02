@@ -38,10 +38,14 @@ fig.add_trace(go.Pie(labels=causes, values=counts, name='Primary Causes of Wildf
 # Create the area chart
 fig.add_trace(go.Scatter(x=df['Year'], y=df['Total Sq Km'], fill='tozeroy', name='Cumulative Sq Km Burned'))
 
+# Creating a comparison chart for Protection Zones
+fig.add_trace(go.Bar(name='Inside Protection Zones', x=df_protzone['_id'], y=df_protzone['fire_count']))
+
 # Create a seasonal bar chart
 seasons = ['Spring', 'Summer', 'Fall', 'Winter']
 fire_counts = [150, 200, 180, 120]  # Example counts of fires per season
 fig.add_trace(go.Bar(x=seasons, y=fire_counts, name='Seasonal Fires', marker_color='skyblue'))
+
 
 # Update layout
 fig.update_layout(title='Wildfire Data Analysis',
