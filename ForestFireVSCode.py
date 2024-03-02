@@ -1,6 +1,7 @@
 import pymongo
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 
 def process_data():
     # Connecting to the MongoDB database
@@ -31,14 +32,6 @@ def generate_plots(data):
     # Creating the line chart
     fig.add_trace(go.Scatter(x=data['Year'], y=data['Count of Fires'], name='Count of Fires', mode='lines+markers', yaxis='y2', marker=dict(color='red')))
 
-def generate_plots(data):
-    # Creating the bar chart
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=data['Year'], y=data['Total Sq Km'], name='Total Sq Km Burned', marker_color='blue', opacity=0.5))
-
-    # Creating the line chart
-    fig.add_trace(go.Scatter(x=data['Year'], y=data['Count of Fires'], name='Count of Fires', mode='lines+markers', yaxis='y2', marker=dict(color='red')))
-
     # Create a pie chart
     causes = ['Human (H)', 'Human with Power Line (H-PH)', 'Unknown (U)', 'Lightning (L)']
     counts = [25, 35, 20, 20]
@@ -46,9 +39,8 @@ def generate_plots(data):
     fig.add_trace(go.Pie(labels=causes, values=counts, name='Primary Causes of Wildfires', marker=dict(colors=colors)))
 
     # Create the area chart
-    fig = go.Figure(data=go.Scatter(x=data['Year'], y=data['Cumulative Sq Km'], fill='tozeroy'))
-    fig.update_layout(title='Cumulative Square Kilometers Burned over the Years', xaxis_title='Year', yaxis_title='Cumulative Square Kilometers Burned')
-    
+    fig.add_trace(go.Scatter(x=data['Year'], y=data['Total Sq Km'], fill='tozeroy', name='Cumulative Sq Km Burned'))
+
     # Create a seasonal bar chart
     seasons = ['Spring', 'Summer', 'Fall', 'Winter']
     fire_counts = [150, 200, 180, 120]  # Example counts of fires per season
@@ -61,15 +53,42 @@ def generate_plots(data):
                       yaxis2=dict(title='Count of Fires', overlaying='y', side='right', showgrid=False, showline=True, linecolor='red'),
                       barmode='group')
 
-    
-
-    # Return the HTML representation of the plot
     return fig.to_html(include_plotlyjs='cdn')
 
+def generate_heatmap():
+    # Connecting to the MongoDB database
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client["forestFireProject_db"]
+    collection = db["ForestFirePoints"]
 
+    # Query data
+    pipeline = [
+        {"$match": {"YEAR": {"$gte": 1950, "$lte": 2021}}},
+        {"$group": {"_id": {"YEAR": "$YEAR", "MONTH": "$MONTH"}, "count": {"$sum": 1}}},
+        {"$sort": {"_id": 1}}
+    ]
+    results = list(collection.aggregate(pipeline))
+
+    # Convert data to DataFrame
+    data = pd.DataFrame(results)
+
+    # Rename columns
+    data['_id.YEAR'] = data['_id'].apply(lambda x: x['YEAR'])
+    data['_id.MONTH'] = data['_id'].apply(lambda x: x['MONTH'])
+
+    # Pivot data for heatmap
+    pivot_data = data.pivot(index='_id.MONTH', columns='_id.YEAR', values='count')
+
+    # Create heatmap using Plotly
+    fig = px.imshow(pivot_data, labels=dict(x="Year", y="Month", color="Wildfire Count"))
+    fig.update_layout(title='Temporal Clustering of Wildfires', xaxis_nticks=12)
+    return fig.to_html(include_plotlyjs='cdn')
 
 if __name__ == '__main__':
     data = process_data()
     print(data.columns)  # Print the column names
     plot_html = generate_plots(data)
     print(plot_html)
+
+    heatmap_html = generate_heatmap()
+    print(heatmap_html)
