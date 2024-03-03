@@ -1,0 +1,7 @@
+mongoDB import instructions.  should be run from the resources folder.
+
+mongoimport --db forestFireProject_db --type json -c ForestFirePolygons --drop --jsonArray --file fire_data_fixed.json
+mongoimport --db forestFireProject_db --type json -c WaterDrainageRegions --drop --jsonArray --file water_drainage_regions.json
+mongoimport --db forestFireProject_db --type json -c WaterSites --drop --jsonArray --file water_sties.json
+mongoimport --db forestFireProject_db --type json -c ForestFirePoints --drop --jsonArray NFDB_point_20220901_large_fires.json
+mongoimport --db forestFireProject_db --type csv -c WaterVariableDescriptions --headerline --drop water_variable_info.csv
