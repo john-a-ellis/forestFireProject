@@ -67,10 +67,26 @@
     <!-- End of Effectiveness of Fire Protection Zones chart -->
     <div class="row">
       <div class="col-md-5">
-        <h3>What Are The Number of Wildfires per Season? </h3>
-        <div id="seasonalBar"></div>
+        <h3>What Are The Number of Wildfires per Season?</h3>
+        <div id="seasonalScatter"></div>
       </div>
-    </div>
+    </div>   
+    <!-- Top 5 and Bottom 5 Years in Terms of Fire Counts chart -->
+<div class="row">
+  <div class="col-md-12">
+    <h3>What Are The Top 5 and Bottom 5 Years in Terms of Fire Counts?</h3>
+    <div id="topBottom"></div>
+  </div>
+</div>
+<!-- End of Top 5 and Bottom 5 Years in Terms of Fire Counts chart -->
+<div class="row">
+  <div class="col-md-5">
+    <h3>Weather Animation</h3>
+    <img id="weather-animation" src="http://localhost:5000/data/weather-animation?startdate=2021-05-01&enddate=2021-05-31"/>
+  </div>
+</div>
+
+ 
   </div>
 
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -159,18 +175,50 @@ function renderCharts() {
   Plotly.newPlot('fireProtectionZones', [fireProtectionZonesData], fireProtectionZonesLayout);
 
   // Sample data for the seasonal bar chart
-  var seasonalBarData = {
-    x: ['Spring', 'Summer', 'Fall', 'Winter'],
-    y: [150, 200, 180, 120],
-    type: 'bar',
-    marker: { color: 'skyblue' }
-  };
-  var seasonalBarLayout = {
-    title: 'Number of Wildfires per Season',
-    xaxis: { title: 'Season' },
-    yaxis: { title: 'Count of Fires' }
-  };
-  Plotly.newPlot('seasonalBar', [seasonalBarData], seasonalBarLayout);
+var seasonalScatterData = {
+  x: ['Spring', 'Summer', 'Fall', 'Winter'],
+  y: [150, 200, 180, 120],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { color: 'skyblue', size: 10 }
+};
+var seasonalScatterLayout = {
+  title: 'Number of Wildfires per Season',
+  xaxis: { title: 'Season' },
+  yaxis: { title: 'Count of Fires' }
+};
+Plotly.newPlot('seasonalScatter', [seasonalScatterData], seasonalScatterLayout);
+
+
+// Sample data for top 5 and bottom 5 years
+var top5Years = ['2000', '2010', '2020'];
+var bottom5Years = ['1960', '1970', '1980'];
+var topBottomData = [
+  {
+    x: top5Years,
+    y: [80, 75, 85],  // Example counts of fires for top 5 years
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'Top 5 Years',
+    line: {color: 'blue'}
+  },
+  {
+    x: bottom5Years,
+    y: [50, 60, 55],  // Example counts of fires for bottom 5 years
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'Bottom 5 Years',
+    line: {color: 'orange'}
+  }
+];
+var topBottomLayout = {
+  title: 'Top 5 and Bottom 5 Years in Terms of Fire Counts',
+  xaxis: { title: 'Year' },
+  yaxis: { title: 'Count of Fires' }
+};
+Plotly.newPlot('topBottom', topBottomData, topBottomLayout);
+
+
 
   // Add an event listener to the dropdown menu
   document.getElementById('yearDropdown').addEventListener('change', updateCharts);
