@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <img id="headerImage" src="https://images.pexels.com/photos/3552472/pexels-photo-3552472.jpeg" alt="Wildfire on Mountain" style="width: 50%; display: block; margin: 0 auto;">
+
+  <title>Wildfire Causes and Effects in Canada</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+</head>
+ 
+<body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 jumbotron text-center">
+          <h1>Wildfire Causes and Effects in Canada</h1>
+          <p>Use the interactive charts below to explore the dataset</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p>Enter Date Range:</p>
+          <form action="">
+            <label for="fromDate">From Date:</label>
+            <input type="text" id="dateStart" name="dateStart"><br>
+            <label for="toDate">From Date:</label>
+            <input type="text" id="dateStop" name="dateStop"><br>
+            <button type="button" id="animate">Generate Animation</button>
+            <button type="button" id="map">Generate Map</button>
+            <script>
+                document.getElementById("animate").addEventListener("click", function() {
+                    var startValue = document.getElementById("dateStart").value;
+                    var stopValue = document.getElementById("dateStop").value;
+                    window.location.href = "{{ url_for('get_weather_animation') }}?startdate=" + startValue + "&endate=" + stopValue;
+                });
+                document.getElementById("map").addEventListener("click", function() {
+                    var startValue = document.getElementById("dateStart").value;
+                           window.location.href = "{{ url_for('get_Map') }}?date=" + startValue;
+                });
+            </script>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
