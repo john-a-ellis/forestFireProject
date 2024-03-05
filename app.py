@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from ForestFireVSCode import process_data, generate_plots
+from FireVSCode import process_data, generate_plots
 
 app = Flask(__name__)
 
