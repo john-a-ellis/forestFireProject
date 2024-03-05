@@ -61,13 +61,17 @@ def make_weather_and_fire_animation(start_date, end_date):
 
     # Create a plot with all weather data color coded from blue-red (relative temperatures)
     # Overlay with the forest fires for that day, in black.
-    fig, ax = plt.subplots()
-    plt.title(f"Weather Data Overlaying Wildfire Points' Data \n{date}\n\nHigh Temperatures = Red markers; Cool Temperatures = Blue markers; \nWildfires = Black markers")
-    plt.xlabel("Longitude")
-    plt.ylabel('Latitude')
-    weather_for_day_df.plot("MEAN_TEMPERATURE", cmap="coolwarm", ax=ax)
-    ax.scatter(fires_for_date_df["LONGITUDE"], fires_for_date_df["LATITUDE"], color="black", s=10)
-    
+    fig, axes = plt.subplots(1,2,layout = 'constrained')
+    fig.suptitle(f"Weather Data Overlaying Wildfire Points' Data \n{date}\n\n\n\n\nWildfire activity shown in black")
+    fig.supxlabel("Longitude")
+    fig.supylabel('Latitude')
+    axes[0].set_title('Relative temperatures\n in blue-red')
+    axes[1].set_title('Relative humidity\n in blue (Light blue = Low)')
+    weather_for_day_df.plot("MEAN_TEMPERATURE", cmap="coolwarm", ax=axes[0])
+    axes[0].scatter(fires_for_date_df["LONGITUDE"], fires_for_date_df["LATITUDE"], color="black", s=10)
+    weather_for_day_df.plot("TOTAL_PRECIPITATION", cmap="Blues", ax=axes[1])
+    axes[1].scatter(fires_for_date_df["LONGITUDE"], fires_for_date_df["LATITUDE"], color="black", s=10)
+   
     # Save frame of animation to animations folder.
     image_path = f"./resources/animation/{i}.png"
     plt.savefig(image_path)
