@@ -2,12 +2,15 @@ import pymongo
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
+<<<<<<< HEAD
 import datetime
 import geopandas as gpd
 import requests
 from matplotlib import pyplot as plt
 import imageio.v2 as imageio
 import pymongo
+=======
+>>>>>>> 06e7d67 (Commit)
 
 
 # Connecting to the MongoDB database
@@ -38,6 +41,7 @@ data_protzone = {'_id': ['Inside Protection Zones', 'Outside Protection Zones'],
                  'fire_count': [100, 150]}  # Example fire counts inside and outside protection zones
 df_protzone = pd.DataFrame(data_protzone)
 
+<<<<<<< HEAD
 # Creating the bar chart
 fig = go.Figure()
 fig.add_trace(go.Bar(x=df['Year'], y=df['Total Sq Km'], name='Total Sq Km Burned', marker_color='blue', opacity=0.5))
@@ -91,10 +95,26 @@ def create_top_bottom_line_chart(top_5_years, bottom_5_years):
         yaxis=dict(title='Fire Counts'),
         showlegend=True
     )
+=======
+    # Create a pie chart
+    causes = ['Human (H)', 'Human with Power Line (H-PH)', 'Unknown (U)', 'Lightning (L)']
+    counts = [25, 35, 20, 20]
+    colors = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen']
+    fig.add_trace(go.Pie(labels=causes, values=counts, name='Primary Causes of Wildfires', marker=dict(colors=colors)))
+
+    # Create the area chart
+    fig.add_trace(go.Scatter(x=data['Year'], y=data['Total Sq Km'], fill='tozeroy', name='Cumulative Sq Km Burned'))
+
+    # Create a seasonal bar chart
+    seasons = ['Spring', 'Summer', 'Fall', 'Winter']
+    fire_counts = [150, 200, 180, 120]  # Example counts of fires per season
+    fig.add_trace(go.Bar(x=seasons, y=fire_counts, name='Seasonal Fires', marker_color='skyblue'))
+>>>>>>> 06e7d67 (Commit)
 
     # Create figure
     fig = go.Figure(data=[trace_top, trace_bottom], layout=layout)
 
+<<<<<<< HEAD
     return fig
 
 # Usage example
@@ -106,9 +126,40 @@ bottom_5_years_df = pd.DataFrame(bottom_5_years_data)
 
 # Create the line chart
 line_chart = create_top_bottom_line_chart(top_5_years_df, bottom_5_years_df)
+=======
+    return fig.to_html(include_plotlyjs='cdn')
+>>>>>>> 06e7d67 (Commit)
 
+def generate_heatmap():
+    # Connecting to the MongoDB database
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client["forestFireProject_db"]
+    collection = db["ForestFirePoints"]
 
+    # Query data
+    pipeline = [
+        {"$match": {"YEAR": {"$gte": 1950, "$lte": 2021}}},
+        {"$group": {"_id": {"YEAR": "$YEAR", "MONTH": "$MONTH"}, "count": {"$sum": 1}}},
+        {"$sort": {"_id": 1}}
+    ]
+    results = list(collection.aggregate(pipeline))
 
+    # Convert data to DataFrame
+    data = pd.DataFrame(results)
+
+    # Rename columns
+    data['_id.YEAR'] = data['_id'].apply(lambda x: x['YEAR'])
+    data['_id.MONTH'] = data['_id'].apply(lambda x: x['MONTH'])
+
+    # Pivot data for heatmap
+    pivot_data = data.pivot(index='_id.MONTH', columns='_id.YEAR', values='count')
+
+    # Create heatmap using Plotly
+    fig = px.imshow(pivot_data, labels=dict(x="Year", y="Month", color="Wildfire Count"))
+    fig.update_layout(title='Temporal Clustering of Wildfires', xaxis_nticks=12)
+    return fig.to_html(include_plotlyjs='cdn')
+
+<<<<<<< HEAD
 #weather data
 
 
@@ -128,3 +179,13 @@ print(df.columns)
 
 # Print the HTML code for the plots
 print(fig.to_html(include_plotlyjs='cdn'))
+=======
+if __name__ == '__main__':
+    data = process_data()
+    print(data.columns)  # Print the column names
+    plot_html = generate_plots(data)
+    print(plot_html)
+
+    heatmap_html = generate_heatmap()
+    print(heatmap_html)
+>>>>>>> 06e7d67 (Commit)
