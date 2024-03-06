@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <img id="headerImage" src="https://images.pexels.com/photos/3552472/pexels-photo-3552472.jpeg" alt="Wildfire on Mountain" style="width: 50%; display: block; margin: 0 auto;">
+
+  <title>Wildfire Causes and Effects in Canada</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 jumbotron text-center">
+        <h1>Wildfire Causes and Effects in Canada</h1>
+        <p>Use the interactive charts below to explore the dataset</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p>Pick the year:</p>
+        <select id="yearDropdown" class="form-control">
+          <option value="1960">1960</option>
+          <option value="1970">1970</option>
+          <option value="1980">1980</option>
+          <option value="1990">1990</option>
+          <option value="2000">2000</option>
+          <option value="2010">2010</option>
+          <option value="2020">2020</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <h3>How has the frequency of wildfires changed over the years?</h3>
+        <h5>Burned Per Year</h5>
+        <div id="bar"></div>
+      </div>
+      <div class="col-md-5">
+        <h5>Count Of Fires</h5>
+        <div id="line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>What are the primary causes of wildfires?</h3>
+        <div id="pie"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>How Has The Cumulative Square kilometers Burned Changed Over The Years?</h3>
+        <div id="area"></div>
+      </div>
+    </div>
+    <!-- Effectiveness of Fire Protection Zones chart -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>How Does The Frequency Of Fire Occurrence Inside And Outside Fire Protection Zones Compare?</h3>
+        <div id="fireProtectionZones"></div>
+      </div>
+    </div>
+    <!-- End of Effectiveness of Fire Protection Zones chart -->
+      
+    <!-- Top 3 in Terms of Fire Counts pie -->
+<div class="row">
+  <div class="col-md-12">
+    <h3>What Are The Top 3 in Terms of Fire Counts?</h3>
+    <div id="fireCounts" style="width: 1000px; height: 650px;"></div>
+  </div>
+</div>
+<!-- End of Top 3 in Terms of Fire Counts pie -->
+
+  </div>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    // Render the Plotly charts
+function renderCharts() {
+  // Sample data for the bar chart
+  var barData = {
+    x: [1960, 1970, 1980, 1990, 2000, 2010, 2020],
+    y: [50, 100, 150, 170, 200, 180, 190],
+    type: 'bar',
+    marker: { color: 'blue' },
+    opacity: 0.5
+  };
+  var barLayout = {
+    title: 'Total Square Kilometers Burned per Year (1960-2021)',
+    xaxis: { title: 'Year' },
+    yaxis: { title: 'Square Kilometers Burned' }
+  };
+  Plotly.newPlot('bar', [barData], barLayout);
+
+  // Sample data for the line chart
+  var lineData = {
+    x: [1960, 1970, 1980, 1990, 2000, 2010, 2020],
+    y: [50, 60, 55, 70, 80, 75, 85],
+    type: 'scatter',
+    mode: 'lines+markers',
+    yaxis: 'y2',
+    marker: { color: 'red' }
+  };
+  var lineLayout = {
+    yaxis2: {
+      title: 'Count of Fires',
+      overlaying: 'y',
+      side: 'right',
+      showgrid: false,
+      showline: true,
+      linecolor: 'red'
+    },
+    barmode: 'group'
+  };
+  Plotly.newPlot('line', [lineData], lineLayout);
+
+  // Sample data for the pie chart
+  var pieData = [{
+    values: [83.7, 11.9, 3.66, 0.672, 0.101],
+    labels: ['Lightning', 'Human', 'Unknown', 'Not Available', 'Human (Prescribed)'],
+    type: 'pie'
+  }];
+  var pieLayout = {
+    title: 'Primary Causes of Wildfires',
+    showlegend: true,
+    legend: { x: 1.3, y: 0.9, traceorder: 'normal', font: { size: 8 } }
+  };
+  Plotly.newPlot('pie', pieData, pieLayout);
+
+  // Sample data for the area chart
+  var areaData = {
+    x: [1960, 1970, 1980, 1990, 2000, 2010, 2020],
+    y: [150, 250, 380, 550, 750, 930, 1120],
+    type: 'scatter',
+    fill: 'tozeroy',
+    mode: 'none',
+    fillcolor: 'rgba(0,100,80,0.2)',
+    line: { color: 'rgba(255,255,255,0)' }
+  };
+  var areaLayout = {
+    title: 'Cumulative Square Kilometers Burned over the Years',
+    xaxis: { title: 'Year' },
+    yaxis: { title: 'Cumulative Square Kilometers Burned' }
+  };
+  Plotly.newPlot('area', [areaData], areaLayout);
+
+  // Sample data for the fire protection zones chart
+  var fireProtectionZonesData = {
+    x: ['Inside Protection Zones', 'Outside Protection Zones'],
+    y: [100, 150],  // Sample data for the number of fires inside and outside protection zones
+    type: 'bar',
+    marker: { color: ['green', 'red'] }
+  };
+  var fireProtectionZonesLayout = {
+    title: 'Effectiveness of Fire Protection Zones',
+    xaxis: { title: 'Protection Zone' },
+    yaxis: { title: 'Number of Fires' }
+  };
+  Plotly.newPlot('fireProtectionZones', [fireProtectionZonesData], fireProtectionZonesLayout);
+
+// Sample data for top 3 years
+ // Sample data
+ var data = [{
+    labels: ['1995', '1979', '2014'],
+    values: [1050000.0, 857600.0, 632984.1],
+    type: 'pie',
+    marker: { colors: ['skyblue', 'lightgreen', 'orange'] }
+  }];
+
+  var layout = {
+    title: 'Fire Counts by Year',
+  };
+
+  Plotly.newPlot('fireCounts', data, layout);
+
+  // Add an event listener to the dropdown menu
+  document.getElementById('yearDropdown').addEventListener('change', updateCharts);
+}
+
+// Call the renderCharts function when the page is loaded
+document.addEventListener('DOMContentLoaded', renderCharts);
+
+</script>
+</body>
+
+</html>
