@@ -61,8 +61,8 @@ def make_weather_and_fire_animation(start_date, end_date):
 
     # Create a plot with all weather data color coded from blue-red (relative temperatures)
     # Overlay with the forest fires for that day, in black.
-    fig, axes = plt.subplots(1,2,layout = 'constrained')
-    fig.suptitle(f"Weather Data Overlaying Wildfire Points' Data \n{date}\n\n\n\n\nWildfire activity shown in black")
+    fig, axes = plt.subplots(2,1,layout = 'tight', )
+    fig.suptitle(f"Weather Data Overlaying Wildfire Points' Data \n{date}\nWildfire activity shown in black")
     fig.supxlabel("Longitude")
     fig.supylabel('Latitude')
     axes[0].set_title('Relative temperatures\n in blue-red')
@@ -80,4 +80,4 @@ def make_weather_and_fire_animation(start_date, end_date):
     
     plt.close()
 
-    imageio.mimsave('./resources/animation.gif',images, fps = 2)
+    imageio.mimsave('./static/animation.gif',images, fps = 2, loop =10)
