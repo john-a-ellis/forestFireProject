@@ -29,34 +29,29 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <!-- <div class="=container"> -->
-              <!-- <iframe id="FireWithWeather", title="Fire with Weather", width="100", height = "300"> -->
-                <img src="static/animation.gif" alt="FireWithWeather" width="100%" height="400" class="img-rounded">
-              <!-- </iframe> -->
-          <!-- </div> -->
-        </div>
-        <div class="col-sm-8">
           <div class="=container">
-              <iframe id="FireWithWater", title="Fire with Water", width="100%", height = "1000",  src={{ url_for('static', filename='FireWithWater.html')}}
-                
-              </iframe>
+            <img src="static/animation.gif" alt="FireWithWeather" width="100%" height="400" class="img-rounded">
+          </div>
+        </div>
+        <script>
+          document.getElementById("animate").addEventListener("click", function() {
+              var startValue = document.getElementById("dateStart").value;
+              var stopValue = document.getElementById("dateStop").value;
+              window.location.href = "{{ url_for('get_weather_animation') }}?startdate=" + startValue + "&enddate=" + stopValue;
+          });
+          document.getElementById("map").addEventListener("click", function() {
+              var startValue = document.getElementById("dateStart").value;
+                     window.location.href = "{{ url_for('get_Map') }}?date=" + startValue;
+          });
+        </script>
+          <div class="col-sm-8">
+          <div class="=container">
+              <iframe id="FireWithWater", title="Fire with Water", width="100%", height = "650",  src={{ url_for('static', filename='FireWithWater.html')}}
+            </iframe>
             </div>
         </div>
-    </div>
-
-      <script>
-        document.getElementById("animate").addEventListener("click", function() {
-            var startValue = document.getElementById("dateStart").value;
-            var stopValue = document.getElementById("dateStop").value;
-            window.location.href = "{{ url_for('get_weather_animation') }}?startdate=" + startValue + "&enddate=" + stopValue;
-        });
-        document.getElementById("map").addEventListener("click", function() {
-            var startValue = document.getElementById("dateStart").value;
-                   window.location.href = "{{ url_for('get_Map') }}?date=" + startValue;
-        });
-    </script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ 
    
   </body>
 </<!DOCTYPE html>

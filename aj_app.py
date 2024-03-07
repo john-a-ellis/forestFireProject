@@ -36,9 +36,10 @@ def get_weather_animation():
     
     make_weather_and_fire_animation(start_date, end_date)
     myMap = genMap(myYear, myMonth)
-    render_template("FireWithWater.html")
+    myMap.save('static/FireWithWater.html')
+    # render_template("FireWithWater.html")
     send_file("static/animation.gif", mimetype="image/animation")
-    return render_template(index.html)
+    return render_template('aj_index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
