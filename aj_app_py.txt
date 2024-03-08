@@ -1,0 +1,23 @@
+# Dependencies
+from FireWithWeather_Viz import make_weather_and_fire_animation
+import datetime
+from flask import Flask, render_template, jsonify, send_file, request
+
+"""
+Create a new route to generate a weather/fire animation.
+Accepts a start and end date in the form YYYY-MM-DD.
+"""
+@app.get("/data/weather-animation")
+def get_weather_animation():
+    start_date_param = request.args.get("startdate")
+    end_date_param = request.args.get("enddate")
+
+    start_date = datetime.datetime.strptime(start_date_param, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(end_date_param, "%Y-%m-%d")
+
+    make_weather_and_fire_animation(start_date, end_date)
+    
+    return send_file("resources/animation.gif", mimetype="image/animation")
+
+if __name__ == '__main__':
+    app.run(debug=True)
