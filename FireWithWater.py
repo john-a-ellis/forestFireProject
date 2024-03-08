@@ -38,7 +38,7 @@ def genMap(mapYear, mapMonth):
     FiretoDate=FiretoDate.strftime('%Y-%m-%d %H:%M')
 
     # import shape file defining Canadian water regions
-    WaterRegions_gdf = gpd.read_file('../Fire_and_Water/resources/Drainage_regions_Regions_de_drainage.shp')
+    WaterRegions_gdf = gpd.read_file('resources/Drainage_Regions_reduced.shp')
 
     #create some user friendly column names for presentation
     WaterRegions_gdf.rename(columns = {'DR_Name':'Drainage Regions', 'ODA_Name':'Ocean Drainage Areas'}, inplace = True)
@@ -140,20 +140,20 @@ def genMap(mapYear, mapMonth):
     WaterSiteFG = folium.FeatureGroup(name="Water Data Sites", show=False).add_to(myMap)
     for i, row in sitePlotData_gdf.iterrows():
         #create the chart for the values we are plotting for each site.
-        circle = (
+        line = (
             Chart(PlotWaterData_gdf.loc[PlotWaterData_gdf['SITE_NO'] == row['SITE_NO']])
-            .mark_circle()
+            .mark_line()
             .encode(
                 x="DATE_TIME_HEURE",
                 y="VALUE_VALEUR",
                 color="VARIABLE",
-                size="VALUE_VALEUR"
+                # size="VALUE_VALEUR"
             )
         )
         title= ("Heavy Metal Concentrations")
         
         vega_lite=folium.VegaLite(
-            circle,
+            line,
             width="100%",
             height="100%",
     

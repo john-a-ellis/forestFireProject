@@ -94,7 +94,10 @@ df_pie["_id"] = df_pie["_id"].map({
 fig_pie = px.pie(df_pie, values='total_size_ha', names='_id', title='Distribution of Wildfire Causes (1960-2021)')
 
 # Print the HTML code for the pie chart
-print(fig_pie.to_html(include_plotlyjs='cdn'))
-
+mypie = fig_pie.to_html(include_plotlyjs='cdn')
+with open('static/fig_pie.html', 'w') as html_file:
+    html_file.write(mypie)
 # Print the HTML code for the plots
-print(fig.to_html(include_plotlyjs='cdn'))
+myfig = fig.to_html(include_plotlyjs='cdn')
+with open('static/fig.html', 'w') as html_file:
+    html_file.write(myfig)
